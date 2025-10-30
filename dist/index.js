@@ -25828,7 +25828,7 @@ async function ensureRyuuInstalled() {
     core.info('✅ ryuu is already installed');
   } catch (error) {
     core.info('📦 Installing ryuu globally...');
-    await exec.exec('npm', ['install', '-g', 'ryuu']);
+    await exec.exec('npm', ['install', '-g', 'ryuu@beta']);
     core.info('✅ ryuu installed successfully');
   }
 }
