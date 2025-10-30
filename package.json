@@ -23,7 +23,7 @@
     "@actions/exec": "^1.1.1",
     "@actions/github": "^6.0.0",
     "@actions/io": "^1.1.2",
-    "ryuu": "^4.4.14"
+    "ryuu": "^5.0.0-beta.3"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.38.0",
