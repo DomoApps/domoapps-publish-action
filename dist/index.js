@@ -25843,13 +25843,8 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 
   const instanceName = extractInstanceName(domoInstance);
 
-  // Add token to domo CLI
-  const addTokenCommand = `domo token -i ${instanceName} -t ${domoToken} add`;
-  await exec.exec('bash', ['-c', addTokenCommand]);
-  core.info('✅ Token added successfully');
-
-  // Login to Domo
-  const loginCommand = `domo login --instance ${instanceName}`;
+  // Login to Domo with Token
+  const loginCommand = `domo login -i ${instanceName} -t ${domoToken}`;
   await exec.exec('bash', ['-c', loginCommand]);
   core.info('✅ Successfully authenticated with Domo');
 }
