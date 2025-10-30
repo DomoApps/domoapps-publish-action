@@ -274,11 +274,10 @@ The `working-directory` parameter should point to the **build output directory**
 
 ## How It Works
 
-The action uses the `ryuu` npm package (which provides the `domo` CLI command) to deploy Domo apps. The authentication process follows these steps:
+The action uses the `ryuu` npm package (which provides the `domo` CLI command) to deploy Domo apps. With the latest ryuu CLI, the process is:
 
-1. **Token Addition**: `domo token -i <instance>.domo.com -t <token> add`
-2. **Login**: `domo login --instance <instance>.domo.com`
-3. **Publish**: `domo publish <app-path>`
+1. **Login with Token**: `domo login -i <instance>.domo.com -t <token>`
+2. **Publish Build Directory**: `domo publish --build-dir <build-directory>`
 
 The action automatically handles the instance name extraction from the full Domo URL.
 

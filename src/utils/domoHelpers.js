@@ -49,7 +49,7 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 async function publishApp(appPath, domoInstance) {
   core.info('📤 Publishing app to Domo...');
 
-  const publishCommand = `domo publish "${appPath}"`;
+  const publishCommand = `domo publish --build-dir "${appPath}"`;
   await exec.exec('bash', ['-c', publishCommand]);
   core.info('✅ App published successfully');
 
