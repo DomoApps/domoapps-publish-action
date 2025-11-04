@@ -25843,16 +25843,11 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 
   const instanceName = extractInstanceName(domoInstance);
 
-  // Login to Domo with Token using npm exec
-  await exec.exec('npm', [
-    'exec',
-    'domo',
-    '--',
-    'login',
-    '-i',
-    instanceName,
-    '-t',
-    domoToken,
+  // Login to Domo with Token using npx with -c to handle shebang issues
+  // Uses the globally-installed ryuu@beta package
+  await exec.exec('npx', [
+    '-c',
+    `domo login -i ${instanceName} -t ${domoToken}`,
   ]);
   core.info('✅ Successfully authenticated with Domo');
 }
@@ -25865,8 +25860,9 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 async function publishApp(appPath, domoInstance) {
   core.info('📤 Publishing app to Domo...');
 
-  // Publish using npm exec
-  await exec.exec('npm', ['exec', 'domo', '--', 'publish', '--build-dir', appPath]);
+  // Publish using npx with -c to handle shebang issues
+  // Uses the globally-installed ryuu@beta package
+  await exec.exec('npx', ['-c', `domo publish --build-dir ${appPath}`]);
   core.info('✅ App published successfully');
 
   // Set outputs

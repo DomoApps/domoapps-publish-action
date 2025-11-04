@@ -39,19 +39,23 @@ Each step is a separate module that performs one part of the deployment pipeline
 - `domoHelpers.js` - Core Domo CLI operations:
   - `extractInstanceName()` - Converts full URL to instance name
   - `ensureRyuuInstalled()` - Installs ryuu@beta globally if needed
-  - `authenticateWithDomo()` - Runs `npm exec domo -- login -i <instance> -t <token>`
-  - `publishApp()` - Runs `npm exec domo -- publish --build-dir <path>`
+  - `authenticateWithDomo()` - Runs `npx -c "domo login -i <instance> -t <token>"`
+  - `publishApp()` - Runs `npx -c "domo publish --build-dir <path>"`
 
 - `packageManager.js` - Detects and manages package managers (npm, yarn, pnpm) based on lock files
 
 ### Domo CLI Invocation Pattern
 
-**IMPORTANT**: The action executes the Domo CLI using `npm exec`:
+**IMPORTANT**: The action pre-installs ryuu@beta globally, then uses `npx -c` to execute commands:
 ```javascript
-await exec.exec('npm', ['exec', 'domo', '--', 'login', '-i', instanceName, '-t', domoToken]);
+await exec.exec('npx', ['-c', `domo login -i ${instanceName} -t ${domoToken}`]);
 ```
 
-This pattern uses npm to locate and execute the globally-installed `domo` command from the ryuu package, avoiding the need to manually find script paths.
+**Why this approach:**
+1. ryuu@beta is installed globally first for version control and performance
+2. `npx -c` (command mode) executes in a shell context, bypassing the shebang issue
+3. The shebang `#!/usr/bin/env node --harmony` in ryuu's domo script fails on systems where env doesn't support passing flags
+4. `npx -c` finds the globally-installed domo command without needing `-y` since it's already installed
 
 ### Build Output
 
@@ -89,4 +93,5 @@ Tests are located in `__tests__/` and use Jest. Run tests with `npm test`.
 - The action installs `ryuu@beta` globally, not the stable version
 - Authentication happens before build in case the build needs Domo access
 - Directory change happens after build so the build output directory exists
-- All Domo CLI commands are executed via `npm exec domo` which handles finding the correct binary
+- All Domo CLI commands are executed via `npx -c` which bypasses shebang issues in the domo script
+- The shebang issue: ryuu's domo script uses `#!/usr/bin/env node --harmony` which fails on systems where env doesn't support passing flags
