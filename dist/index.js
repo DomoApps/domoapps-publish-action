@@ -25808,6 +25808,7 @@ module.exports = {
 
 const exec = __nccwpck_require__(5236);
 const core = __nccwpck_require__(7484);
+const { execSync } = __nccwpck_require__(5317);
 
 /**
  * Extracts instance name from Domo URL
@@ -25816,6 +25817,25 @@ const core = __nccwpck_require__(7484);
  */
 function extractInstanceName(domoInstance) {
   return domoInstance.replace(/^https?:\/\//, '').replace(/\/$/, '');
+}
+
+/**
+ * Gets the path to the ryuu domo script
+ * @returns {string} Path to the domo script
+ */
+function getDomoScriptPath() {
+  try {
+    // Get the global npm prefix
+    const npmPrefix = execSync('npm config get prefix', {
+      encoding: 'utf8',
+    }).trim();
+    // Path to the globally installed ryuu domo script
+    return `${npmPrefix}/lib/node_modules/ryuu/bin/domo`;
+  } catch (error) {
+    // Fallback: try to find it via npm root
+    const npmRoot = execSync('npm root -g', { encoding: 'utf8' }).trim();
+    return `${npmRoot}/ryuu/bin/domo`;
+  }
 }
 
 /**
@@ -25843,8 +25863,16 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 
   const instanceName = extractInstanceName(domoInstance);
 
-  // Login to Domo with Token (using npm exec to handle shebang issues)
-  await exec.exec('npm', ['exec', '--', 'domo', 'login', '-i', instanceName, '-t', domoToken]);
+  // Login to Domo with Token (execute via node to bypass shebang issues)
+  const domoScript = getDomoScriptPath();
+  await exec.exec('node', [
+    domoScript,
+    'login',
+    '-i',
+    instanceName,
+    '-t',
+    domoToken,
+  ]);
   core.info('✅ Successfully authenticated with Domo');
 }
 
@@ -25856,8 +25884,9 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 async function publishApp(appPath, domoInstance) {
   core.info('📤 Publishing app to Domo...');
 
-  // Use npm exec to handle shebang issues
-  await exec.exec('npm', ['exec', '--', 'domo', 'publish', '--build-dir', appPath]);
+  // Execute via node to bypass shebang issues
+  const domoScript = getDomoScriptPath();
+  await exec.exec('node', [domoScript, 'publish', '--build-dir', appPath]);
   core.info('✅ App published successfully');
 
   // Set outputs
