@@ -25843,8 +25843,8 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 
   const instanceName = extractInstanceName(domoInstance);
 
-  // Login to Domo with Token
-  await exec.exec('domo', ['login', '-i', instanceName, '-t', domoToken]);
+  // Login to Domo with Token (using npm exec to handle shebang issues)
+  await exec.exec('npm', ['exec', '--', 'domo', 'login', '-i', instanceName, '-t', domoToken]);
   core.info('✅ Successfully authenticated with Domo');
 }
 
@@ -25856,7 +25856,8 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 async function publishApp(appPath, domoInstance) {
   core.info('📤 Publishing app to Domo...');
 
-  await exec.exec('domo', ['publish', '--build-dir', appPath]);
+  // Use npm exec to handle shebang issues
+  await exec.exec('npm', ['exec', '--', 'domo', 'publish', '--build-dir', appPath]);
   core.info('✅ App published successfully');
 
   // Set outputs
