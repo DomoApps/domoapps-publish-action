@@ -37,10 +37,7 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 
   // Login to Domo with Token using npx with -c to handle shebang issues
   // Uses the globally-installed ryuu@beta package
-  await exec.exec('npx', [
-    '-c',
-    `domo login -i ${instanceName} -t ${domoToken}`,
-  ]);
+  await exec.exec('domo', ['login', '-i', instanceName, '-t', domoToken]);
   core.info('✅ Successfully authenticated with Domo');
 }
 
@@ -54,7 +51,7 @@ async function publishApp(appPath, domoInstance) {
 
   // Publish using npx with -c to handle shebang issues
   // Uses the globally-installed ryuu@beta package
-  await exec.exec('npx', ['-c', `domo publish --build-dir ${appPath}`]);
+  await exec.exec('domo', ['publish', '--build-dir', appPath]);
   core.info('✅ App published successfully');
 
   // Set outputs
