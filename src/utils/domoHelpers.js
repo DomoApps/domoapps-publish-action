@@ -20,7 +20,7 @@ async function ensureRyuuInstalled() {
     core.info('✅ ryuu is already installed');
   } catch (error) {
     core.info('📦 Installing ryuu globally...');
-    await exec.exec('npm', ['install', '-g', 'ryuu@beta']);
+    await exec.exec('npm', ['install', '-g', 'ryuu']);
     core.info('✅ ryuu installed successfully');
   }
 }
@@ -35,8 +35,7 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 
   const instanceName = extractInstanceName(domoInstance);
 
-  // Login to Domo with Token using npx with -c to handle shebang issues
-  // Uses the globally-installed ryuu@beta package
+  // Login to Domo using the globally-installed ryuu CLI
   await exec.exec('domo', ['login', '-i', instanceName, '-t', domoToken]);
   core.info('✅ Successfully authenticated with Domo');
 }
@@ -49,8 +48,7 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 async function publishApp(appPath, domoInstance) {
   core.info('📤 Publishing app to Domo...');
 
-  // Publish using npx with -c to handle shebang issues
-  // Uses the globally-installed ryuu@beta package
+  // Publish using the globally-installed ryuu CLI
   await exec.exec('domo', ['publish', '--build-dir', appPath]);
   core.info('✅ App published successfully');
 

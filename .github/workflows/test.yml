@@ -32,12 +32,24 @@ jobs:
       - name: Build action
         run: yarn run build
 
-      - name: Test action locally
+      - name: Verify dist/index.js is up to date
         run: |
-          # Test that the action file is valid JavaScript
-          node -c dist/index.js
-          echo "✅ Action file is valid JavaScript"
+          git diff --exit-code dist/index.js || {
+            echo "::error::dist/index.js is out of date. Run 'npm run build' and commit the result."
+            exit 1
+          }
 
-          # Test that the action can start (will fail at authentication, which is expected)
-          timeout 10s node dist/index.js || true
-          echo "✅ Action started successfully (authentication failure is expected)"
+      - name: Verify action rejects missing inputs
+        run: |
+          # Run with no inputs — should exit non-zero with a clear error
+          output=$(node dist/index.js 2>&1) && {
+            echo "::error::Action should have failed with missing inputs but exited 0"
+            exit 1
+          }
+          if echo "$output" | grep -q "Input required and not supplied\|deployment-status"; then
+            echo "Action correctly rejected missing inputs"
+          else
+            echo "::error::Action failed with unexpected output:"
+            echo "$output"
+            exit 1
+          fi

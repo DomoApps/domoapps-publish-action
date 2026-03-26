@@ -7,7 +7,13 @@ const core = require('@actions/core');
 function changeDirectory(workingDirectory) {
   if (workingDirectory !== '.') {
     core.info(`📂 Changing to working directory: ${workingDirectory}`);
-    process.chdir(workingDirectory);
+    try {
+      process.chdir(workingDirectory);
+    } catch (error) {
+      throw new Error(
+        `Working directory '${workingDirectory}' does not exist or is not accessible: ${error.message}`,
+      );
+    }
   }
 }
 

@@ -1,29 +1,27 @@
-name: 'Domo Publish Action'
-description: 'Deploy Domo apps from GitHub to a Domo instance using ryuu'
+name: "Domo Publish Action"
+description: "Deploy Domo apps from GitHub to a Domo instance using ryuu"
 branding:
-  icon: 'upload-cloud'
-  color: 'blue'
+  icon: "upload-cloud"
+  color: "blue"
 inputs:
   domo-token:
-    description: 'Domo API token for authentication'
+    description: "Domo API token for authentication"
     required: true
   domo-instance:
-    description: 'Domo instance URL (e.g., https://your-company.domo.com)'
+    description: "Domo instance URL (e.g., https://your-company.domo.com)"
     required: true
   build-command:
-    description: 'Optional build command to run before deployment'
+    description: "Optional build command to run before deployment"
     required: false
   working-directory:
-    description: 'Working directory for the action'
+    description: "Working directory for the action"
     required: false
-    default: '.'
+    default: "."
 outputs:
   deployment-status:
-    description: 'Status of the deployment'
-    value: ${{ steps.deploy.outputs.status }}
+    description: "Status of the deployment"
   app-url:
-    description: 'URL of the deployed app'
-    value: ${{ steps.deploy.outputs.app-url }}
+    description: "URL of the deployed app"
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
+  using: "node20"
+  main: "dist/index.js"

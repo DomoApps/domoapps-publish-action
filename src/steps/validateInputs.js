@@ -7,7 +7,7 @@ const core = require('@actions/core');
  */
 function validateInputs(domoToken, domoInstance) {
   // Validate Domo instance URL
-  if (!domoInstance || !domoInstance.includes('domo.com')) {
+  if (!domoInstance || !domoInstance.includes('.domo.com')) {
     core.setFailed('Invalid Domo instance URL. Must be a valid Domo instance.');
     return false;
   }

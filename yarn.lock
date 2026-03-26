@@ -330,21 +330,21 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@domoinc/ryuu-proxy@5.0.0-beta.0":
-  version "5.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@domoinc/ryuu-proxy/-/ryuu-proxy-5.0.0-beta.0.tgz#d5b74139fb9b8a89c3d70b61261f9da7a603d423"
-  integrity sha512-Djr+Pf3CXLIElX7HCJGiLdOHbRxB1aVzsTTPums1yDa2seA8PFmDXkqTX1bnGruQh8eL8JZ3B/B7G/h/yEoSKA==
+"@domoinc/ryuu-proxy@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@domoinc/ryuu-proxy/-/ryuu-proxy-5.0.2.tgz#003f4e8275909242ea8535a38a3eb2bd87a62bc3"
+  integrity sha512-VvDaFQf6LB9X9c49qe0ct4oMVjb5SXecHsIIgWgKBRgi3dq1FSgapUv0oeeu6o+Ynp+dC6YAAEx62PuTy1z9aA==
   dependencies:
-    axios "^1.13.0"
+    axios "^1.13.5"
     axios-cookiejar-support "^6.0.4"
     busboy "^1.6.0"
     configstore "^7.1.0"
     dotenv "^16.6.1"
     form-data "^4.0.4"
     fs-extra "^11.3.2"
-    glob "^10.4.5"
+    glob "^10.5.0"
     https-proxy-agent "^7.0.6"
-    ryuu-client "^4.4.4"
+    ryuu-client "^4.4.5"
     tough-cookie "^5.0.0"
 
 "@esbuild/aix-ppc64@0.25.11":
@@ -1299,24 +1299,6 @@ axios-cookiejar-support@^6.0.4:
   dependencies:
     http-cookie-agent "^7.0.2"
 
-axios@1.7.9:
-  version "1.7.9"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.9.tgz#d7d071380c132a24accda1b2cfc1535b79ec650a"
-  integrity sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==
-  dependencies:
-    follow-redirects "^1.15.6"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
-
-axios@^0.28.1:
-  version "0.28.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.28.1.tgz#2a7bcd34a3837b71ee1a5ca3762214b86b703e70"
-  integrity sha512-iUcGA5a7p0mVb4Gm/sy+FSECNkPFT4y7wt6OM/CDpO/OnNCvSs3PoMG8ibrC9jRoGYU0gUK5pXVC4NPXq6lHRQ==
-  dependencies:
-    follow-redirects "^1.15.0"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
-
 axios@^1.13.0:
   version "1.13.1"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.13.1.tgz#45b62dc8fe04e0e92274e08b98e910ba3d7963a7"
@@ -1324,6 +1306,15 @@ axios@^1.13.0:
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.4"
+    proxy-from-env "^1.1.0"
+
+axios@^1.13.5:
+  version "1.13.6"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.13.6.tgz#c3f92da917dc209a15dd29936d20d5089b6b6c98"
+  integrity sha512-ChTCHMouEe2kn713WHbQGcuYrr6fXTBiu460OTwWrWob16g1bXn4vtz07Ope7ewMozJAnEquLk5lWQWtBig9DQ==
+  dependencies:
+    follow-redirects "^1.15.11"
+    form-data "^4.0.5"
     proxy-from-env "^1.1.0"
 
 babel-jest@^29.7.0:
@@ -2215,7 +2206,7 @@ flatted@^3.2.9:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.3.3.tgz#67c8fad95454a7c7abebf74bb78ee74a44023358"
   integrity sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==
 
-follow-redirects@^1.15.0, follow-redirects@^1.15.6:
+follow-redirects@^1.15.11, follow-redirects@^1.15.6:
   version "1.15.11"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.11.tgz#777d73d72a92f8ec4d2e410eb47352a56b8e8340"
   integrity sha512-deG2P0JfjrTxl50XGCDyfI97ZGVCxIpfKYmfyrQ54n5FO/0gfIES8C/Psl6kWVDolizcaaxZJnTS0QSMxvnsBQ==
@@ -2232,6 +2223,17 @@ form-data@^4.0.0, form-data@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.4.tgz#784cdcce0669a9d68e94d11ac4eea98088edd2c4"
   integrity sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.8"
+    es-set-tostringtag "^2.1.0"
+    hasown "^2.0.2"
+    mime-types "^2.1.12"
+
+form-data@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.5.tgz#b49e48858045ff4cbf6b03e1805cebcad3679053"
+  integrity sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.8"
@@ -2352,10 +2354,10 @@ glob-parent@^6.0.2:
   dependencies:
     is-glob "^4.0.3"
 
-glob@^10.4.5:
-  version "10.4.5"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-10.4.5.tgz#f4d9f0b90ffdbab09c9d77f5f29b4262517b0956"
-  integrity sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==
+glob@^10.5.0:
+  version "10.5.0"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-10.5.0.tgz#8ec0355919cd3338c28428a23d4f24ecc5fe738c"
+  integrity sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==
   dependencies:
     foreground-child "^3.1.0"
     jackspeak "^3.1.2"
@@ -3823,12 +3825,12 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-ryuu-client@^4.4.4:
-  version "4.4.4"
-  resolved "https://registry.yarnpkg.com/ryuu-client/-/ryuu-client-4.4.4.tgz#4a90089968c8476bf8413101f4ccebf7b423345a"
-  integrity sha512-VdlKOa8lzgm+Dv3ecymaZ/6alcDT2IwehLF4pTGeKwx2WCJKaYQbwwnF31VUfvsC5ll2lXOFTVvg/DA9p2Dc7Q==
+ryuu-client@^4.4.5:
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/ryuu-client/-/ryuu-client-4.4.5.tgz#60f04793102b5f2f42b11036981b4b6bc64c10b2"
+  integrity sha512-vucCP4WkXJPvq8M4hYBAx/0S0VCMwvR8H0AUMGhvBDyPT3/h3Suf4hO5t7yZj/xLpemqBHrppAkJWZNtbnNcBQ==
   dependencies:
-    axios "^0.28.1"
+    axios "^1.13.0"
     form-data "^4.0.0"
     fs-extra "^10.0.0"
     glob "^7.2.0"
@@ -3836,15 +3838,15 @@ ryuu-client@^4.4.4:
     open "^8.4.0"
     qs "^6.11.0"
 
-ryuu@^5.0.0-beta.3:
-  version "5.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/ryuu/-/ryuu-5.0.0-beta.3.tgz#bb243c262f65813c165e665d79b98b33da0d4756"
-  integrity sha512-+PqDXnzCMkC7z6ApP9oB3Prwe6OjfdaRqUUmx1HClS2EJirOzGfRlZijYYHdiu8vYb63eq7ewvc8BXQOTlrgWQ==
+ryuu@^5.0.0:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/ryuu/-/ryuu-5.0.4.tgz#b00021d47cf46c97dd18f84e74ccbd7db7104dd7"
+  integrity sha512-eiufQtNe1Qla4U0wo9Ljc+Vy8LHvT8UNfhm2BI6YIeu0dRDDDF13pWfO1bzv3179KllHlM7k0qTQx18WzjCQQw==
   dependencies:
-    "@domoinc/ryuu-proxy" "5.0.0-beta.0"
+    "@domoinc/ryuu-proxy" "^5.0.2"
     "@vitejs/plugin-react" "^5.0.4"
     async "^3.2.6"
-    axios "1.7.9"
+    axios "^1.13.0"
     chalk "^4.1.2"
     cli-table3 "^0.6.5"
     commander "^14.0.1"
@@ -3860,7 +3862,7 @@ ryuu@^5.0.0-beta.3:
     qs "^6.14.0"
     react "^19.2.0"
     react-dom "^19.2.0"
-    ryuu-client "^4.4.4"
+    ryuu-client "^4.4.5"
     semver "^7.7.3"
     shelljs "^0.10.0"
     slug "^11.0.1"

@@ -20,6 +20,7 @@ async function run() {
 
     // Validate inputs
     if (!validateInputs(domoToken, domoInstance)) {
+      core.setOutput('deployment-status', 'failed');
       return;
     }
 
