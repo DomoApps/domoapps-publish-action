@@ -45,12 +45,3 @@ jobs:
             - Comprehensive error handling
           draft: false
           prerelease: false
-
-      - name: Move floating major tag
-        run: |
-          TAG="${{ github.ref_name }}"        # e.g. v3.1.0
-          MAJOR="${TAG%%.*}"                  # -> v3
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag -f "$MAJOR" "$TAG"
-          git push origin "$MAJOR" --force
