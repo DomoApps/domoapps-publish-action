@@ -41,18 +41,18 @@ async function authenticateWithDomo(domoToken, domoInstance) {
 }
 
 /**
- * Publishes the app to Domo
- * @param {string} appPath - The path to the app to publish
+ * Publishes the app to Domo. Caller is expected to have chdir'd into the
+ * directory containing manifest.json — we run plain `domo publish` (no
+ * --build-dir) so ryuu's findManifest resolves against the right CWD.
+ * @param {string} appPath - The publish dir, used only for the app-url output
  * @param {string} domoInstance - The Domo instance URL
  */
 async function publishApp(appPath, domoInstance) {
   core.info('📤 Publishing app to Domo...');
 
-  // Publish using the globally-installed ryuu CLI
-  await exec.exec('domo', ['publish', '--build-dir', appPath]);
+  await exec.exec('domo', ['publish']);
   core.info('✅ App published successfully');
 
-  // Set outputs
   core.setOutput('deployment-status', 'success');
   core.setOutput('app-url', `${domoInstance}/app/${appPath}`);
 }

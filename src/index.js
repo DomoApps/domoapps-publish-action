@@ -36,6 +36,10 @@ async function run() {
 
     await runBuild(buildCommand);
 
+    if (publishDir !== '.') {
+      changeDirectory(publishDir);
+    }
+
     await publishAppStep(publishDir, domoInstance);
 
     core.info('🎉 Deployment completed successfully!');

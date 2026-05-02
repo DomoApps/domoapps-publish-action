@@ -183,13 +183,9 @@ describe('Domo Publish Action', () => {
   describe('Domo Publish', () => {
     const { publishApp } = require('../src/utils/domoHelpers');
 
-    test('calls domo publish with correct args', async () => {
+    test('calls domo publish with no flags (relies on CWD)', async () => {
       await publishApp('./dist', 'https://company.domo.com');
-      expect(exec.exec).toHaveBeenCalledWith('domo', [
-        'publish',
-        '--build-dir',
-        './dist',
-      ]);
+      expect(exec.exec).toHaveBeenCalledWith('domo', ['publish']);
     });
 
     test('sets success outputs', async () => {
