@@ -3,7 +3,10 @@ name: Release
 on:
   push:
     tags:
-      - "v*"
+      # Only fire on pinned semver tags (v3.0.0, v3.1.0, …).
+      # Excludes the floating major tag (v3) so this workflow doesn't
+      # re-trigger when we move it at the end of the job.
+      - "v[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
   release:
@@ -33,7 +36,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: Release ${{ github.ref_name }}
           body: |
             ## Changes in this Release
             - Deploy Domo apps using ryuu
@@ -42,3 +45,12 @@ jobs:
             - Comprehensive error handling
           draft: false
           prerelease: false
+
+      - name: Move floating major tag
+        run: |
+          TAG="${{ github.ref_name }}"        # e.g. v3.1.0
+          MAJOR="${TAG%%.*}"                  # -> v3
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -f "$MAJOR" "$TAG"
+          git push origin "$MAJOR" --force
