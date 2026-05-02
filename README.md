@@ -61,7 +61,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'npm'
 
       - name: Deploy to Domo
@@ -215,7 +215,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'npm'
 
       - name: Resolve environment
@@ -298,7 +298,7 @@ The action auto-detects your package manager from the lockfile and runs the inst
 - uses: pnpm/action-setup@v4
   with: { version: 9 }
 - uses: actions/setup-node@v4
-  with: { node-version: '22', cache: 'pnpm' }
+  with: { node-version: '24', cache: 'pnpm' }
 - uses: DomoApps/domoapps-publish-action@v3.0.0
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
@@ -311,7 +311,7 @@ The action auto-detects your package manager from the lockfile and runs the inst
 # yarn
 - uses: actions/checkout@v4
 - uses: actions/setup-node@v4
-  with: { node-version: '22', cache: 'yarn' }
+  with: { node-version: '24', cache: 'yarn' }
 - uses: DomoApps/domoapps-publish-action@v3.0.0
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
