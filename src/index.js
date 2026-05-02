@@ -8,40 +8,35 @@ const { publishAppStep } = require('./steps/publishApp');
 
 async function run() {
   try {
-    // Get inputs
     const domoToken = core.getInput('domo-token', { required: true });
     const domoInstance = core.getInput('domo-instance', { required: true });
     const buildCommand = core.getInput('build-command', { required: false });
     const workingDirectory =
       core.getInput('working-directory', { required: false }) || '.';
+    const publishDirInput = core.getInput('publish-dir', { required: false });
+    const publishDir = publishDirInput && publishDirInput.trim() !== ''
+      ? publishDirInput
+      : '.';
 
-    // The app path is determined by the working directory
-    const appPath = workingDirectory;
-
-    // Validate inputs
     if (!validateInputs(domoToken, domoInstance)) {
       core.setOutput('deployment-status', 'failed');
       return;
     }
 
     core.info('🚀 Starting Domo app deployment...');
-    core.info(`📁 App path: ${appPath}`);
+    core.info(`📁 Working directory: ${workingDirectory}`);
+    core.info(`📦 Publish directory: ${publishDir}`);
     core.info(`🌐 Domo instance: ${domoInstance}`);
 
-    // Setup environment (package manager, dependencies, ryuu)
     await setupEnvironment();
 
-    // Authenticate with Domo (before build, in case build needs Domo access)
     await authenticateDomo(domoToken, domoInstance);
 
-    // Run build command if provided (after authentication, in case it needs Domo access)
-    await runBuild(buildCommand);
-
-    // Change to working directory (after build, so the directory exists)
     changeDirectory(workingDirectory);
 
-    // Publish the app
-    await publishAppStep(appPath, domoInstance);
+    await runBuild(buildCommand);
+
+    await publishAppStep(publishDir, domoInstance);
 
     core.info('🎉 Deployment completed successfully!');
   } catch (error) {
@@ -50,5 +45,4 @@ async function run() {
   }
 }
 
-// Run the action
 run();

@@ -1,6 +1,6 @@
 {
   "name": "domo-publish-action",
-  "version": "1.1.0",
+  "version": "3.0.0",
   "description": "GitHub Action for deploying Domo apps to Domo instances",
   "main": "dist/index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "prettier": "^3.6.2"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=22.0.0"
   },
   "lint-staged": {
     "src/**/*.js": [

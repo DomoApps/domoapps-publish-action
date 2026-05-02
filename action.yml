@@ -11,17 +11,21 @@ inputs:
     description: "Domo instance URL (e.g., https://your-company.domo.com)"
     required: true
   build-command:
-    description: "Optional build command to run before deployment"
+    description: "Optional build command to run before deployment (runs inside working-directory)"
     required: false
   working-directory:
-    description: "Working directory for the action"
+    description: "Source directory where dependencies install and the build command runs"
     required: false
     default: "."
+  publish-dir:
+    description: "Path to the built artifact to publish (e.g., ./build, ./dist). Resolved relative to working-directory. Defaults to working-directory."
+    required: false
+    default: ""
 outputs:
   deployment-status:
     description: "Status of the deployment"
   app-url:
     description: "URL of the deployed app"
 runs:
-  using: "node20"
+  using: "node22"
   main: "dist/index.js"
