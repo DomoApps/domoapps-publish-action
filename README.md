@@ -350,7 +350,9 @@ The action auto-detects your package manager from the lockfile and runs the inst
 3. **Install `ryuu` globally** on the runner.
 4. **Authenticate**: `domo login -i <instance> -t <token>`. Done before the build so a build step can hit Domo APIs if needed.
 5. **Build**: change to `working-directory` and run `build-command` (if provided).
-6. **Publish**: `domo publish --build-dir <publish-dir>`. Only the contents of `publish-dir` are uploaded.
+6. **Publish**: `cd` into `publish-dir`, then run plain `domo publish`. Only the contents of `publish-dir` are uploaded.
+
+> **Why we `cd` instead of using `domo publish --build-dir`**: ryuu loads `manifest.json` *before* applying its own `--build-dir` chdir, so it would resolve the manifest against the caller's CWD (often `public/manifest.json` with no `id`) — causing a brand-new design to be created on every run instead of updating the one your build emitted. Chdir-ing ourselves lets ryuu's `findManifest` land directly on the resolved `manifest.json` inside your build output.
 
 You don't need a separate install step. The only setup the action *doesn't* do is making the package manager binary itself available — for npm and yarn, `actions/setup-node` already includes them; for pnpm you need `pnpm/action-setup`.
 
@@ -417,6 +419,11 @@ v3 reframes `working-directory` to mean the **source** directory. The new `publi
 
 If you don't run a build (flat ProCode app), no change is needed — defaults still publish from the repo root.
 
+### Also fixed in v3
+
+- **Each deploy no longer creates a new design.** v2 invoked `domo publish --build-dir <dir>`, which made ryuu read the manifest from the *caller's* CWD (your repo root, where `public/manifest.json` typically has no `id`). Result: a new app was created on every run, even though your build output had the right `id`. v3 chdirs into `publish-dir` first and runs plain `domo publish`, so ryuu reads the manifest your build actually emitted. Tools like `da apply-manifest` that write the resolved id into the build output Just Work now.
+- **`./build/build` resolution bug** (the old action's `changeDirectory` + `--build-dir` interaction) is gone.
+
 ---
 
 ## Troubleshooting
@@ -425,7 +432,7 @@ If you don't run a build (flat ProCode app), no change is needed — defaults st
 |---|---|---|
 | `Manifest not found` | `publish-dir` doesn't contain `manifest.json` after build | Ensure your build copies `manifest.json` into the publish output (e.g. via Vite's `public/` folder). Verify locally: `ls $(your-build-dir)/manifest.json` |
 | `Authentication failed` | Bad / expired token, or wrong instance URL | Regenerate token in Domo admin. Ensure `domo-instance` includes the `https://` scheme. |
-| Each deploy creates a new app | Missing `id` in `manifest.json` | After first publish, copy `id` from `build/manifest.json` into your source `public/manifest.json`. |
+| Each deploy creates a new app | `manifest.json` inside `publish-dir` has no `id`, or its `id` doesn't exist on the target instance | After the first publish, ensure the `id` from `<publish-dir>/manifest.json` is what subsequent runs publish. If you use `da apply-manifest` for per-env overrides, confirm `manifestOverrides.json` has the right `id` for that env. v3 reads the manifest from the build output, so anything written there at build time is what ryuu sees. |
 | Repo files leak into the published app | Using v2 without an isolated `working-directory`, or upgraded to v3 but didn't set `publish-dir` | Set `publish-dir` to your build output folder. |
 | `sh: 1: da: not found` (or other CLI not on PATH in CI) | The CLI is installed globally locally but not in CI's clean install | Add the CLI as a `devDependency` (e.g. `@domoinc/da`) so `npm ci` puts it in `node_modules/.bin`. |
 | AppDB calls fail at runtime | Missing `proxyId` in `manifest.json` | After first publish with `collections`, copy `proxyId` from `build/manifest.json`. |
