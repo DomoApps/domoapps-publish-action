@@ -27,5 +27,5 @@ outputs:
   app-url:
     description: "URL of the deployed app"
 runs:
-  using: "node22"
+  using: "node24"
   main: "dist/index.js"
