@@ -1,4 +1,6 @@
 # Domo Publish Action
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FDomoApps%2Fdomoapps-publish-action.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FDomoApps%2Fdomoapps-publish-action?ref=badge_shield)
+
 
 A GitHub Action for deploying Domo Custom Apps to a Domo instance using the [new Domo CLI](https://app.domo.com/domo-cli/install.sh).
 
@@ -464,6 +466,9 @@ Enable verbose logs by setting these as GitHub Actions secrets on your repo:
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FDomoApps%2Fdomoapps-publish-action.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FDomoApps%2Fdomoapps-publish-action?ref=badge_large)
 
 ## Support
 
