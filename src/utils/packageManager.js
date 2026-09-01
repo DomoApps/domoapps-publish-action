@@ -17,9 +17,34 @@ function detectPackageManager() {
   return 'npm'; // Default to npm
 }
 
-/**
- * Ensures the appropriate package manager is installed
- */
+// Read the pnpm version from package.json's packageManager field (e.g. "pnpm@10.15.0"),
+// stripping any Corepack integrity hash. Returns null to install the latest pnpm.
+function getPnpmVersion() {
+  try {
+    if (fs.existsSync('package.json')) {
+      const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+      const pm = pkg.packageManager;
+      if (pm && pm.startsWith('pnpm@')) {
+        return pm.slice('pnpm@'.length).split('+')[0];
+      }
+    }
+  } catch {
+    // fall through to latest
+  }
+  return null;
+}
+
+// Returns the installed pnpm major version (0 if it can't be determined)
+async function getPnpmMajor() {
+  try {
+    const { stdout } = await exec.getExecOutput('pnpm', ['--version'], { silent: true });
+    return parseInt(stdout.trim().split('.')[0], 10) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+
 async function ensurePackageManager() {
   try {
     const packageManager = detectPackageManager();
@@ -31,7 +56,8 @@ async function ensurePackageManager() {
         core.info('✅ pnpm is already available');
       } catch (error) {
         core.info('📦 Installing pnpm...');
-        await exec.exec('npm', ['install', '-g', 'pnpm']);
+        const pnpmVersion = getPnpmVersion();
+        await exec.exec('npm', ['install', '-g', pnpmVersion ? `pnpm@${pnpmVersion}` : 'pnpm']);
         core.info('✅ pnpm installed successfully');
       }
     } else if (packageManager === 'yarn') {
@@ -76,7 +102,16 @@ async function installDependencies() {
     core.info('📦 Installing dependencies...');
 
     if (packageManager === 'pnpm') {
-      await exec.exec('pnpm', ['install', '--frozen-lockfile']);
+      const pnpmArgs = ['install', '--frozen-lockfile'];
+      // pnpm 10+ blocks dependency build scripts by default. This action runs in CI
+      // deploying the user's own app from their own committed lockfile, so allow those
+      // scripts to run — otherwise native deps like esbuild / @parcel/watcher never
+      // compile and the build fails ("Run pnpm approve-builds"). The flag only exists
+      // on pnpm 10+, so gate on the major version.
+      if ((await getPnpmMajor()) >= 10) {
+        pnpmArgs.push('--dangerously-allow-all-builds');
+      }
+      await exec.exec('pnpm', pnpmArgs);
     } else if (packageManager === 'yarn') {
       await exec.exec('yarn', ['install', '--frozen-lockfile']);
     } else if (packageManager === 'npm') {
