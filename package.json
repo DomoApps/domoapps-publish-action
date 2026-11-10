@@ -1,8 +1,16 @@
 {
   "name": "domo-publish-action",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "GitHub Action for deploying Domo apps to Domo instances",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/domoinc/domoapps-publish-action.git"
+  },
+  "bugs": {
+    "url": "https://github.com/domoinc/domoapps-publish-action/issues"
+  },
+  "homepage": "https://github.com/domoinc/domoapps-publish-action#readme",
   "scripts": {
     "build": "ncc build src/index.js -o dist",
     "test": "jest",

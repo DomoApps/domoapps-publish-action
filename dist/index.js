@@ -25809,6 +25809,40 @@ module.exports = {
 
 /***/ }),
 
+/***/ 2787:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const core = __nccwpck_require__(7484);
+
+const OLD_LOCATION = 'DomoApps/domoapps-publish-action';
+const NEW_LOCATION = 'domoinc/domoapps-publish-action';
+
+/**
+ * Warns when the workflow references the action by its pre-migration
+ * location. GitHub redirects the old name, so the run still works, but the
+ * redirect only lasts as long as the DomoApps org does.
+ */
+function warnDeprecatedLocation() {
+  const actionRepository = process.env.GITHUB_ACTION_REPOSITORY || '';
+  if (actionRepository.toLowerCase() !== OLD_LOCATION.toLowerCase()) {
+    return;
+  }
+
+  core.warning(
+    `${OLD_LOCATION} has moved to ${NEW_LOCATION}. Update your workflow to ` +
+      `"uses: ${NEW_LOCATION}@v3". The old location will stop working when ` +
+      'the DomoApps GitHub org is retired.',
+    { title: 'Domo Publish Action has moved' },
+  );
+}
+
+module.exports = {
+  warnDeprecatedLocation,
+};
+
+
+/***/ }),
+
 /***/ 6313:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -27942,9 +27976,12 @@ const { authenticateDomo } = __nccwpck_require__(505);
 const { runBuild } = __nccwpck_require__(8338);
 const { changeDirectory } = __nccwpck_require__(7126);
 const { publishAppStep } = __nccwpck_require__(2687);
+const { warnDeprecatedLocation } = __nccwpck_require__(2787);
 
 async function run() {
   try {
+    warnDeprecatedLocation();
+
     const domoToken = core.getInput('domo-token', { required: true });
     const domoInstance = core.getInput('domo-instance', { required: true });
     const buildCommand = core.getInput('build-command', { required: false });

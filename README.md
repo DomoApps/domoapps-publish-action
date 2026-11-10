@@ -65,7 +65,7 @@ jobs:
           cache: 'npm'
 
       - name: Deploy to Domo
-        uses: DomoApps/domoapps-publish-action@v3.0.0
+        uses: domoinc/domoapps-publish-action@v3
         with:
           domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
           domo-instance: https://your-company.domo.com
@@ -82,7 +82,7 @@ jobs:
 Source lives at the repo root, Vite emits to `./build`:
 
 ```yaml
-- uses: DomoApps/domoapps-publish-action@v3.0.0
+- uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com
@@ -93,7 +93,7 @@ Source lives at the repo root, Vite emits to `./build`:
 Source lives in a subfolder (`./app`):
 
 ```yaml
-- uses: DomoApps/domoapps-publish-action@v3.0.0
+- uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com
@@ -107,7 +107,7 @@ Source lives in a subfolder (`./app`):
 ### Create React App (CRA)
 
 ```yaml
-- uses: DomoApps/domoapps-publish-action@v3.0.0
+- uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com
@@ -131,7 +131,7 @@ Source lives in a subfolder (`./app`):
 When `manifest.json`, `index.html`, etc. live at the repo root and there's no build step:
 
 ```yaml
-- uses: DomoApps/domoapps-publish-action@v3.0.0
+- uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com
@@ -144,7 +144,7 @@ Defaults handle this — `working-directory: .` and `publish-dir` falls back to 
 `build-command` is a shell string — chain with `&&` to gate the publish on quality checks:
 
 ```yaml
-- uses: DomoApps/domoapps-publish-action@v3.0.0
+- uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com
@@ -163,7 +163,7 @@ Or split into a dedicated checks step *before* this one — failures block the d
     npm test -- --watchAll=false
 
 - name: Build & deploy
-  uses: DomoApps/domoapps-publish-action@v3.0.0
+  uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com
@@ -188,7 +188,7 @@ Domo Apps templates ship with `da apply-manifest` (from the [`@domoinc/da`](http
 ```
 
 ```yaml
-- uses: DomoApps/domoapps-publish-action@v3.0.0
+- uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com
@@ -230,7 +230,7 @@ jobs:
                      echo "instance=https://dev.domo.com"  >> $GITHUB_OUTPUT ;;
           esac
 
-      - uses: DomoApps/domoapps-publish-action@v3.0.0
+      - uses: domoinc/domoapps-publish-action@v3
         with:
           domo-token: ${{ secrets[format('DOMO_TOKEN_{0}', steps.env.outputs.name)] }}
           domo-instance: ${{ steps.env.outputs.instance }}
@@ -261,7 +261,7 @@ on:
 ```yaml
 - name: Deploy
   id: deploy
-  uses: DomoApps/domoapps-publish-action@v3.0.0
+  uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com
@@ -299,7 +299,7 @@ The action auto-detects your package manager from the lockfile and runs the inst
   with: { version: 9 }
 - uses: actions/setup-node@v4
   with: { node-version: '24', cache: 'pnpm' }
-- uses: DomoApps/domoapps-publish-action@v3.0.0
+- uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com
@@ -312,7 +312,7 @@ The action auto-detects your package manager from the lockfile and runs the inst
 - uses: actions/checkout@v4
 - uses: actions/setup-node@v4
   with: { node-version: '24', cache: 'yarn' }
-- uses: DomoApps/domoapps-publish-action@v3.0.0
+- uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com
@@ -407,8 +407,8 @@ For React/Vite apps, place `manifest.json` in `public/` so the build copies it i
 v3 reframes `working-directory` to mean the **source** directory. The new `publish-dir` input names the build output. In v2, the action used `working-directory` for both — which meant if you set it to `./build`, your build command tried to run from there (no `package.json`). If you left it at `.`, the publish step uploaded the entire repo (including `docs/`, `node_modules/`, etc.).
 
 ```diff
-- uses: DomoApps/domoapps-publish-action@v2
-+ uses: DomoApps/domoapps-publish-action@v3.0.0
+- uses: domoinc/domoapps-publish-action@v2
++ uses: domoinc/domoapps-publish-action@v3
   with:
     domo-token: ${{ secrets.DOMO_ACCESS_TOKEN }}
     domo-instance: https://your-company.domo.com

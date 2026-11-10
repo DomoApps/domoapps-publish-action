@@ -5,9 +5,12 @@ const { authenticateDomo } = require('./steps/authenticateDomo');
 const { runBuild } = require('./steps/runBuild');
 const { changeDirectory } = require('./steps/changeDirectory');
 const { publishAppStep } = require('./steps/publishApp');
+const { warnDeprecatedLocation } = require('./steps/warnDeprecatedLocation');
 
 async function run() {
   try {
+    warnDeprecatedLocation();
+
     const domoToken = core.getInput('domo-token', { required: true });
     const domoInstance = core.getInput('domo-instance', { required: true });
     const buildCommand = core.getInput('build-command', { required: false });

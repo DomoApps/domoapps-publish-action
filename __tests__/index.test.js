@@ -200,4 +200,46 @@ describe('Domo Publish Action', () => {
       );
     });
   });
+
+  describe('warnDeprecatedLocation', () => {
+    const {
+      warnDeprecatedLocation,
+    } = require('../src/steps/warnDeprecatedLocation');
+    const original = process.env.GITHUB_ACTION_REPOSITORY;
+
+    afterEach(() => {
+      if (original === undefined) {
+        delete process.env.GITHUB_ACTION_REPOSITORY;
+      } else {
+        process.env.GITHUB_ACTION_REPOSITORY = original;
+      }
+    });
+
+    test('warns when referenced by the old DomoApps location', () => {
+      process.env.GITHUB_ACTION_REPOSITORY = 'DomoApps/domoapps-publish-action';
+      warnDeprecatedLocation();
+      expect(core.warning).toHaveBeenCalledWith(
+        expect.stringContaining('uses: domoinc/domoapps-publish-action@v3'),
+        { title: 'Domo Publish Action has moved' },
+      );
+    });
+
+    test('matches the old location case-insensitively', () => {
+      process.env.GITHUB_ACTION_REPOSITORY = 'domoapps/domoapps-publish-action';
+      warnDeprecatedLocation();
+      expect(core.warning).toHaveBeenCalledTimes(1);
+    });
+
+    test('does not warn for the new domoinc location', () => {
+      process.env.GITHUB_ACTION_REPOSITORY = 'domoinc/domoapps-publish-action';
+      warnDeprecatedLocation();
+      expect(core.warning).not.toHaveBeenCalled();
+    });
+
+    test('does not warn when the repository is unknown', () => {
+      delete process.env.GITHUB_ACTION_REPOSITORY;
+      warnDeprecatedLocation();
+      expect(core.warning).not.toHaveBeenCalled();
+    });
+  });
 });
